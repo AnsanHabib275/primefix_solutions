@@ -26,19 +26,27 @@ class _TrackingMapPageState extends State<TrackingMapPage> {
     sub?.cancel();
     final id = workerIdCtrl.text.trim();
     if (id.isEmpty) return;
-    sub = FirebaseFirestore.instance.collection('worker_locations').doc(id).snapshots().listen((doc) {
-      final data = doc.data() as Map<String, dynamic>?;
-      if (data == null) return;
-      final gp = data['position']?['geopoint'];
-      if (gp == null) return;
-      final lat = gp.latitude as double;
-      final lng = gp.longitude as double;
-      final pos = LatLng(lat, lng);
-      setState(() {
-        workerMarker = Marker(markerId: const MarkerId('worker'), position: pos, infoWindow: const InfoWindow(title: 'Worker'));
-      });
-      map?.animateCamera(CameraUpdate.newLatLng(pos));
-    });
+    sub = FirebaseFirestore.instance
+        .collection('worker_locations')
+        .doc(id)
+        .snapshots()
+        .listen((doc) {
+          final data = doc.data();
+          if (data == null) return;
+          final gp = data['position']?['geopoint'];
+          if (gp == null) return;
+          final lat = gp.latitude as double;
+          final lng = gp.longitude as double;
+          final pos = LatLng(lat, lng);
+          setState(() {
+            workerMarker = Marker(
+              markerId: const MarkerId('worker'),
+              position: pos,
+              infoWindow: const InfoWindow(title: 'Worker'),
+            );
+          });
+          map?.animateCamera(CameraUpdate.newLatLng(pos));
+        });
   }
 
   @override
@@ -46,25 +54,37 @@ class _TrackingMapPageState extends State<TrackingMapPage> {
     final markers = <Marker>{if (workerMarker != null) workerMarker!};
     return Scaffold(
       appBar: AppBar(title: const Text('Live Tracking')),
-      body: Column(children: [
-        Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Row(children: [
-            Expanded(child: TextField(controller: workerIdCtrl, decoration: const InputDecoration(labelText: 'Worker UID'))),
-            const SizedBox(width: 8),
-            ElevatedButton(onPressed: _startTracking, child: const Text('Track')),
-          ]),
-        ),
-        Expanded(
-          child: GoogleMap(
-            initialCameraPosition: CameraPosition(target: initial, zoom: 12),
-            onMapCreated: (c) => map = c,
-            markers: markers,
-            myLocationEnabled: true,
-            myLocationButtonEnabled: true,
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: workerIdCtrl,
+                    decoration: const InputDecoration(labelText: 'Worker UID'),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                ElevatedButton(
+                  onPressed: _startTracking,
+                  child: const Text('Track'),
+                ),
+              ],
+            ),
           ),
-        ),
-      ]),
+          Expanded(
+            child: GoogleMap(
+              initialCameraPosition: CameraPosition(target: initial, zoom: 12),
+              onMapCreated: (c) => map = c,
+              markers: markers,
+              myLocationEnabled: true,
+              myLocationButtonEnabled: true,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

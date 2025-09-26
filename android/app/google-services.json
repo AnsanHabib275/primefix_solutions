@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "194512279029",
+    "project_id": "primefix-solutions",
+    "storage_bucket": "primefix-solutions.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:194512279029:android:92bbb35759cf09ab4fbcbc",
+        "android_client_info": {
+          "package_name": "com.cbs.primefixsolutions"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZIGJ3gp_owb3Xys14DmxhwPw93SOwOD4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

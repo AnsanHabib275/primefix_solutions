@@ -1,4 +1,4 @@
-package com.cbs.primefix_solutions
+package com.cbs.primefixsolutions
 
 import io.flutter.embedding.android.FlutterActivity
 
